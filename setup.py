@@ -9,8 +9,8 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 requirements = [
-    'pyodbc>=4.0.17',
-    'sqlalchemy>=1.2',
+    'pyodbc',
+    'sqlalchemy',
     'pyarrow'
 ]
 
