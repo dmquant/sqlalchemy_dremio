@@ -83,3 +83,22 @@ Superset Integration
 -------------
 
 This SQLAlchemy can be used for connecting Dremio with Superset. Please check superset website for more instructions on the setup.
+
+Development
+-------------
+
+```sh
+sudo apt install -y unixodbc unixodbc-dev
+pip install -r requirements_dev.txt
+```
+
+build
+
+```sh
+python install .
+```
+ref: https://stackoverflow.com/questions/1471994/what-is-setup-py
+
+```sh
+export DREMIO_CONNECTION_URL="dremio+flight://dremioadmin:Dr3m10p4ss@172.31.16.20:32010/dremio"
+```
