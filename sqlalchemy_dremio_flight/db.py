@@ -7,10 +7,10 @@ import logging
 
 # from pyarrow import flight
 
-from sqlalchemy_dremio.exceptions import Error, NotSupportedError
-# from sqlalchemy_dremio.flight_auth import HttpDremioClientAuthHandler
-from sqlalchemy_dremio.flight_client import connect_to_dremio_flight_server_endpoint
-from sqlalchemy_dremio.query import execute
+from sqlalchemy_dremio_flight.exceptions import Error, NotSupportedError
+# from sqlalchemy_dremio_flight.flight_auth import HttpDremioClientAuthHandler
+from sqlalchemy_dremio_flight.flight_client import connect_to_dremio_flight_server_endpoint
+from sqlalchemy_dremio_flight.query import execute
 
 logger = logging.getLogger(__name__)
 

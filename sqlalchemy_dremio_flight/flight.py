@@ -173,7 +173,7 @@ class DremioDialect_flight(default.DefaultDialect):
 
     @classmethod
     def dbapi(cls):
-        import sqlalchemy_dremio.db as module
+        import sqlalchemy_dremio_flight.db as module
         return module
 
     def connect(self, *cargs, **cparams):

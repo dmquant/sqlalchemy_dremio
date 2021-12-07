@@ -8,7 +8,7 @@ Forked from https://github.com/narendrans/sqlalchemy_dremio
 
 
 
-![PyPI](https://img.shields.io/pypi/v/sqlalchemy_dremio.svg)
+![PyPI](https://img.shields.io/pypi/v/sqlalchemy_dremio_flight.svg)
 ![Build](https://github.com/narendrans/sqlalchemy_dremio/workflows/Build/badge.svg)
 
 A SQLAlchemy dialect for Dremio via Flight interfaces.
@@ -57,6 +57,7 @@ export DREMIO_CONNECTION_URL="dremio+flight://dremio:dremio123@localhost:32010/d
 ```
 
 ```py
+sudo python3 setup.py install
 py.test test
 ```
 
@@ -76,6 +77,5 @@ build
 
 ```sh
 sudo python3 setup.py install
+twine upload dist/*
 ```
-ref: https://stackoverflow.com/questions/1471994/what-is-setup-py
-

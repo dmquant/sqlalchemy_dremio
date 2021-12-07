@@ -21,7 +21,7 @@ test_requirements = [
 
 setup(
     name='sqlalchemy_dremio_flight',
-    version='1.2.1',
+    version='1.2.3',
     description="A SQLAlchemy dialect for Dremio via Flight interface.",
     long_description=readme,
     long_description_content_type='text/markdown',
@@ -31,14 +31,14 @@ setup(
     packages=find_packages(include=['sqlalchemy_dremio_flight']),
     entry_points={
         'sqlalchemy.dialects': [
-            'dremio.flight = sqlalchemy_dremio.flight:DremioDialect_flight',
+            'dremio.flight = sqlalchemy_dremio_flight.flight:DremioDialect_flight',
         ]
     },
     include_package_data=True,
     install_requires=requirements,
     license="Apache Software License",
     zip_safe=False,
-    keywords='sqlalchemy_dremio',
+    keywords='sqlalchemy_dremio_flight',
     classifiers=[
         'Development Status :: 5 - Production/Stable',
         'Intended Audience :: Developers',
