@@ -153,10 +153,12 @@ class DremioDialect_flight(default.DefaultDialect):
     supports_sane_multi_rowcount = False
     poolclass = pool.SingletonThreadPool
     statement_compiler = DremioCompiler
-    paramstyle = 'pyformat'
     ddl_compiler = DremioDDLCompiler
     preparer = DremioIdentifierPreparer
     execution_ctx_cls = DremioExecutionContext
+    paramstyle = 'pyformat'
+    # default_paramstyle = "qmark"
+    filter_schema_names = []
 
     def create_connect_args(self, url):
         opts = url.translate_connect_args(username='user')

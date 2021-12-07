@@ -60,7 +60,8 @@ class Connection(object):
         username = splits[0].split("=")[1]
         password = splits[1].split("=")[1]
 
-        self.flightclient = connect_to_dremio_flight_server_endpoint(hostname, port, username, password)
+        connections = connect_to_dremio_flight_server_endpoint(hostname, port, username, password)
+        self.flightclient = connections
 
         self.closed = False
         self.cursors = []

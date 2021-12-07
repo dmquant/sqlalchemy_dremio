@@ -103,14 +103,16 @@ def connect_to_dremio_flight_server_endpoint(hostname, flightport, username, pas
         # Authenticate with the server endpoint.
         bearer_token = client.authenticate_basic_token(
             username, password, initial_options)
+            
+        options = flight.FlightCallOptions(headers=[bearer_token])
         print('[INFO] Authentication was successful')
 
-        return client
-
+        return (client, options)
+        # sqlquery = ""
         # if sqlquery:
         #     # Construct FlightDescriptor for the query result set.
-        #     flight_desc = flight.FlightDescriptor.for_command(sqlquery)
-        #     print('[INFO] Query: ', sqlquery)
+        #     # flight_desc = flight.FlightDescriptor.for_command(sqlquery)
+        #     # print('[INFO] Query: ', sqlquery)
 
         #     # In addition to the bearer token, a query context can also
         #     # be provided as an entry of FlightCallOptions.
@@ -121,9 +123,9 @@ def connect_to_dremio_flight_server_endpoint(hostname, flightport, username, pas
 
         #     # Retrieve the schema of the result set.
         #     options = flight.FlightCallOptions(headers=[bearer_token])
-        #     schema = client.get_schema(flight_desc, options)
-        #     print('[INFO] GetSchema was successful')
-        #     print('[INFO] Schema: ', schema)
+        #     # schema = client.get_schema(flight_desc, options)
+        #     # print('[INFO] GetSchema was successful')
+        #     # print('[INFO] Schema: ', schema)
 
         #     # Get the FlightInfo message to retrieve the Ticket corresponding
         #     # to the query result set.

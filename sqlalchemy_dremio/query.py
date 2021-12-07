@@ -39,9 +39,19 @@ _type_map = {
 }
 
 
-def run_query(query, flightclient=None):
-    info = flightclient.get_flight_info(flight.FlightDescriptor.for_command(query))
-    reader = flightclient.do_get(info.endpoints[0].ticket)
+def run_query(query, connections=None):
+    # print('[INFO] Query: ', query)
+    client = connections[0]
+    options = connections[1]
+
+    # Construct FlightDescriptor for the query result set.
+    flight_desc = flight.FlightDescriptor.for_command(query)
+    flight_info = client.get_flight_info(flight_desc, options)
+    
+    print('[INFO] GetFlightInfo was successful')
+    print('[INFO] Ticket: ', flight_info.endpoints[0].ticket)
+    
+    reader = client.do_get(flight_info.endpoints[0].ticket, options)
 
     batches = []
     while True:

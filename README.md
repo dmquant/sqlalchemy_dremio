@@ -4,13 +4,12 @@
 ![PyPI](https://img.shields.io/pypi/v/sqlalchemy_dremio.svg)
 ![Build](https://github.com/narendrans/sqlalchemy_dremio/workflows/Build/badge.svg)
 
-A SQLAlchemy dialect for Dremio via ODBC and Flight interfaces.
+A SQLAlchemy dialect for Dremio via Flight interfaces.
 
 <!--ts-->
    * [Installation](#installation)
       * [Pre-Requisites](#pre-requisites)
    * [Usage](#usage)
-      * [ODBC](#odbc)
       * [Arrow Flight](#arrow-flight)
    * [Testing](#testing)
    * [Superset Integration](#superset-integration)
@@ -19,39 +18,11 @@ A SQLAlchemy dialect for Dremio via ODBC and Flight interfaces.
 Installation
 ------------
 
-`pip install sqlalchemy_dremio`
+`pip3 install sqlalchemy_dremio`
 
-Pre-Requisites
---------------
-
-Mac OS X:
-
-* Unix ODBC: (brew install unixodbc)
-* Dremio ODBC Driver (https://download.dremio.com/odbc-driver/DremioODBC-LATEST.dmg)
-
-CentOS/RHEL:
-
-* Unix ODBC (sudo yum apt-get install -y unixODBC unixODBC-devel)
-* PyODBC (pip install pyodbc)
-* Dremio ODBC Driver (https://download.dremio.com/odbc-driver/dremio-odbc-LATEST.x86_64.rpm)
-
-Debian:
-
-* Unix ODBC (sudo apt install -y unixodbc unixodbc-dev)
-* PyODBC (pip install pyodbc)
-* Dremio ODBC Driver (https://download.dremio.com/odbc-driver/dremio-odbc-LATEST.x86_64.rpm)
-
-    * Use alien to convert it into deb and then install it.
 
 Usage
 ------------
-
-ODBC
--------
-Connection String example:
-`dremio://user:password@host:port/dremio;SSL=0`
-
-You can specify other ODBC parameters seperated by semi colon.
 
 Arrow Flight
 ------
@@ -69,16 +40,13 @@ Testing
 
 Set the environment variable DREMIO_CONNECTION_STRING:
 
-Windows:
-`setx DREMIO_CONNECTION_URL "dremio://dremio:dremio123@localhost:31010/dremio"`
-
 Linux:
 `export DREMIO_CONNECTION_URL="dremio://dremio:dremio123@localhost:31010/dremio"`
 
 And then run:
 
 ```sh
-export DREMIO_CONNECTION_URL=dremio+flight://welly:dremio123@10.100.0.109:32010/dremio
+export DREMIO_CONNECTION_URL="dremio+flight://welly:dremio123@10.100.0.109:32010/dremio"
 ```
 
 ```py
@@ -94,17 +62,13 @@ Development
 -------------
 
 ```sh
-sudo apt install -y unixodbc unixodbc-dev
 pip install -r requirements_dev.txt
 ```
 
 build
 
 ```sh
-python install .
+sudo python3 setup.py install
 ```
 ref: https://stackoverflow.com/questions/1471994/what-is-setup-py
 
-```sh
-export DREMIO_CONNECTION_URL="dremio+flight://dremioadmin:Dr3m10p4ss@172.31.16.20:32010/dremio"
-```
