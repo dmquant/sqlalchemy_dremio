@@ -9,7 +9,6 @@ with open('README.md') as readme_file:
     readme = readme_file.read()
 
 requirements = [
-    'pyodbc',
     'sqlalchemy',
     'pyarrow'
 ]
@@ -32,7 +31,6 @@ setup(
     packages=find_packages(include=['sqlalchemy_dremio']),
     entry_points={
         'sqlalchemy.dialects': [
-            'dremio = sqlalchemy_dremio.pyodbc:DremioDialect_pyodbc',
             'dremio.flight = sqlalchemy_dremio.flight:DremioDialect_flight',
         ]
     },

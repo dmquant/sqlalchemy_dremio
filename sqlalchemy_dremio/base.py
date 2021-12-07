@@ -156,7 +156,7 @@ class DremioDialect(default.DefaultDialect):
 
     @classmethod
     def dbapi(cls):
-        import pyodbc as module
+        import scripts.pyodbc as module
         return module
 
     def connect(self, *cargs, **cparams):

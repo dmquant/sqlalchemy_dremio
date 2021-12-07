@@ -5,10 +5,11 @@ from __future__ import unicode_literals
 
 import logging
 
-from pyarrow import flight
+# from pyarrow import flight
 
 from sqlalchemy_dremio.exceptions import Error, NotSupportedError
-from sqlalchemy_dremio.flight_auth import HttpDremioClientAuthHandler
+# from sqlalchemy_dremio.flight_auth import HttpDremioClientAuthHandler
+from sqlalchemy_dremio.flight_client import connect_to_dremio_flight_server_endpoint
 from sqlalchemy_dremio.query import execute
 
 logger = logging.getLogger(__name__)
@@ -47,12 +48,19 @@ class Connection(object):
 
     def __init__(self, connection_string):
         # TODO: Find a better way to extend to addition flight parameters
+        
+        # dremio+flight://welly:dremio123@10.100.0.109:32010/dremio
 
+        # client.authenticate(HttpDremioClientAuthHandler(splits[0].split("=")[1], splits[1].split("=")[1]))
+        # client = flight.FlightClient('grpc+tcp://{0}:{1}'.format(splits[2].split("=")[1], splits[3].split("=")[1]))
+        
         splits = connection_string.split(";")
-        client = flight.FlightClient('grpc+tcp://{0}:{1}'.format(splits[2].split("=")[1], splits[3].split("=")[1]))
-        client.authenticate(HttpDremioClientAuthHandler(splits[0].split("=")[1], splits[1].split("=")[1]))
+        hostname = splits[2].split("=")[1]
+        port = splits[3].split("=")[1]
+        username = splits[0].split("=")[1]
+        password = splits[1].split("=")[1]
 
-        self.flightclient = client
+        self.flightclient = connect_to_dremio_flight_server_endpoint(hostname, port, username, password)
 
         self.closed = False
         self.cursors = []
