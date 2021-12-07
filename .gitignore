@@ -64,3 +64,4 @@ target/
 .python-version
 .env
 .vscode
+private/

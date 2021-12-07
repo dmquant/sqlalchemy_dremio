@@ -20,15 +20,15 @@ test_requirements = [
 ]
 
 setup(
-    name='sqlalchemy_dremio',
+    name='sqlalchemy_dremio_flight',
     version='1.2.1',
-    description="A SQLAlchemy dialect for Dremio via the ODBC and Flight interface.",
+    description="A SQLAlchemy dialect for Dremio via Flight interface.",
     long_description=readme,
     long_description_content_type='text/markdown',
-    author="Naren",
-    author_email='me@narendran.info',
-    url='https://github.com/narendrans/sqlalchemy_dremio',
-    packages=find_packages(include=['sqlalchemy_dremio']),
+    author="Welly Tambunan",
+    author_email='coach@wellytambunan.com',
+    url='https://github.com/weltam/sqlalchemy_dremio',
+    packages=find_packages(include=['sqlalchemy_dremio_flight']),
     entry_points={
         'sqlalchemy.dialects': [
             'dremio.flight = sqlalchemy_dremio.flight:DremioDialect_flight',

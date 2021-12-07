@@ -49,7 +49,7 @@ class Connection(object):
     def __init__(self, connection_string):
         # TODO: Find a better way to extend to addition flight parameters
         
-        # dremio+flight://welly:dremio123@10.100.0.109:32010/dremio
+        # dremio+flight://dremio:dremio123@localhost:32010/dremio
 
         # client.authenticate(HttpDremioClientAuthHandler(splits[0].split("=")[1], splits[1].split("=")[1]))
         # client = flight.FlightClient('grpc+tcp://{0}:{1}'.format(splits[2].split("=")[1], splits[3].split("=")[1]))

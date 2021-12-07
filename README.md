@@ -1,6 +1,13 @@
 # SQLAlchemy Dremio
 
 
+
+This is fix dremio arrow flight connection upgrade. 
+
+Forked from https://github.com/narendrans/sqlalchemy_dremio
+
+
+
 ![PyPI](https://img.shields.io/pypi/v/sqlalchemy_dremio.svg)
 ![Build](https://github.com/narendrans/sqlalchemy_dremio/workflows/Build/badge.svg)
 
@@ -46,7 +53,7 @@ Linux:
 And then run:
 
 ```sh
-export DREMIO_CONNECTION_URL="dremio+flight://welly:dremio123@10.100.0.109:32010/dremio"
+export DREMIO_CONNECTION_URL="dremio+flight://dremio:dremio123@localhost:32010/dremio"
 ```
 
 ```py
