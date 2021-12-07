@@ -103,42 +103,48 @@ def connect_to_dremio_flight_server_endpoint(hostname, flightport, username, pas
         # Authenticate with the server endpoint.
         bearer_token = client.authenticate_basic_token(
             username, password, initial_options)
-            
+
         options = flight.FlightCallOptions(headers=[bearer_token])
         print('[INFO] Authentication was successful')
 
         return (client, options)
-        # sqlquery = ""
-        # if sqlquery:
-        #     # Construct FlightDescriptor for the query result set.
-        #     # flight_desc = flight.FlightDescriptor.for_command(sqlquery)
-        #     # print('[INFO] Query: ', sqlquery)
-
-        #     # In addition to the bearer token, a query context can also
-        #     # be provided as an entry of FlightCallOptions.
-        #     # options = flight.FlightCallOptions(headers=[
-        #     #     bearer_token,
-        #     #     (b'schema', b'test.schema')
-        #     # ])
-
-        #     # Retrieve the schema of the result set.
-        #     options = flight.FlightCallOptions(headers=[bearer_token])
-        #     # schema = client.get_schema(flight_desc, options)
-        #     # print('[INFO] GetSchema was successful')
-        #     # print('[INFO] Schema: ', schema)
-
-        #     # Get the FlightInfo message to retrieve the Ticket corresponding
-        #     # to the query result set.
-        #     flight_info = client.get_flight_info(flight.FlightDescriptor.for_command(sqlquery),
-        #                                          options)
-        #     print('[INFO] GetFlightInfo was successful')
-        #     print('[INFO] Ticket: ', flight_info.endpoints[0].ticket)
-
-        #     # Retrieve the result set as a stream of Arrow record batches.
-        #     reader = client.do_get(flight_info.endpoints[0].ticket, options)
-        #     print('[INFO] Reading query results from Dremio')
-        #     print(reader.read_pandas())
 
     except Exception as exception:
         print("[ERROR] Exception: {}".format(repr(exception)))
         raise
+
+# sqlquery = ""
+## Construct FlightDescriptor for the query result set.
+# flight_desc = flight.FlightDescriptor.for_command(sqlquery)
+
+# print('[INFO] Query: ', sqlquery)
+
+## In addition to the bearer token, a query context can also
+## be provided as an entry of FlightCallOptions.
+
+# options = flight.FlightCallOptions(headers=[
+#     bearer_token,
+#     (b'schema', b'test.schema')
+# ])
+
+## Retrieve the schema of the result set.
+
+# options = flight.FlightCallOptions(headers=[bearer_token])
+# schema = client.get_schema(flight_desc, options)
+
+# print('[INFO] GetSchema was successful')
+# print('[INFO] Schema: ', schema)
+
+## Get the FlightInfo message to retrieve the Ticket corresponding
+## to the query result set.
+
+# flight_info = client.get_flight_info(flight.FlightDescriptor.for_command(sqlquery),
+#                                         options)
+# print('[INFO] GetFlightInfo was successful')
+# print('[INFO] Ticket: ', flight_info.endpoints[0].ticket)
+
+## Retrieve the result set as a stream of Arrow record batches.
+
+# reader = client.do_get(flight_info.endpoints[0].ticket, options)
+# print('[INFO] Reading query results from Dremio')
+# print(reader.read_pandas())
