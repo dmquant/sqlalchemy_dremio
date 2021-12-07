@@ -53,17 +53,17 @@ def run_query(query, connections=None):
     
     reader = client.do_get(flight_info.endpoints[0].ticket, options)
 
-    batches = []
-    while True:
-        try:
-            batch, metadata = reader.read_chunk()
-            batches.append(batch)
-        except StopIteration:
-            break
-    # TODO Naren: Coverting to dataframe seems uncessary
+    # batches = []
+    # while True:
+    #     try:
+    #         batch, metadata = reader.read_chunk()
+    #         batches.append(batch)
+    #     except StopIteration:
+    #         break
+    # # TODO Naren: Coverting to dataframe seems uncessary
 
-    data = pa.Table.from_batches(batches)
-    df = data.to_pandas()
+    # data = pa.Table.from_batches(batches)
+    df = reader.read_pandas()
 
     return df
 
