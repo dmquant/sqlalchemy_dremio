@@ -199,6 +199,11 @@ class DremioDialect_flight(default.DefaultDialect):
         result = []
         for col in cursor:
             cname = col[0]
+
+            if col[1] not in _type_map:
+                print(col[1] + " is not found in _type_map. please check the field in the dremio ")
+                continue
+            
             ctype = _type_map[col[1]]
             column = {
                 "name": cname,

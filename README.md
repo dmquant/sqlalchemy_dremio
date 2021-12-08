@@ -61,6 +61,20 @@ sudo python3 setup.py install
 py.test test
 ```
 
+releasing
+
+```sh
+sudo rm -rf build/ dist/ sqlalchemy_dremio_flight.egg-info/
+
+python3 -m pip install build
+
+python3 -m build --sdist
+
+twine check dist/*
+
+twine upload dist/*
+```
+
 Superset Integration
 -------------
 
