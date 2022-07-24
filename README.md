@@ -2,7 +2,7 @@
 
 
 
-This is fix dremio arrow flight connection upgrade. 
+This is fix dremio arrow flight connection upgrade.
 
 Forked from https://github.com/narendrans/sqlalchemy_dremio
 
@@ -64,7 +64,7 @@ py.test test
 releasing
 
 ```sh
-sudo rm -rf build/ dist/ sqlalchemy_dremio_flight.egg-info/
+sudo rm -rf build/ dist/ sqlalchemy_dremio.egg-info/
 
 python3 -m pip install build
 

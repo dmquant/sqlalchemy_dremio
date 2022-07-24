@@ -5,8 +5,8 @@ import pytest
 from sqlalchemy import create_engine
 import sqlalchemy.dialects
 
-# sqlalchemy.dialects.registry.register("dremio", "sqlalchemy_dremio_flight.pyodbc", "DremioDialect_pyodbc")
-sqlalchemy.dialects.registry.register("dremio+flight", "sqlalchemy_dremio_flight.flight", "DremioDialect_flight")
+# sqlalchemy.dialects.registry.register("dremio", "sqlalchemy_dremio.pyodbc", "DremioDialect_pyodbc")
+sqlalchemy.dialects.registry.register("dremio+flight", "sqlalchemy_dremio.flight", "DremioDialect_flight")
 
 def help():
     print("""Connection string must be set as env variable,

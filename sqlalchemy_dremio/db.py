@@ -5,9 +5,9 @@ from __future__ import unicode_literals
 
 import logging
 
-from sqlalchemy_dremio_flight.exceptions import Error, NotSupportedError
-from sqlalchemy_dremio_flight.flight_client import connect_to_dremio_flight_server_endpoint
-from sqlalchemy_dremio_flight.query import execute
+from sqlalchemy_dremio.exceptions import Error, NotSupportedError
+from sqlalchemy_dremio.flight_client import connect_to_dremio_flight_server_endpoint
+from sqlalchemy_dremio.query import execute
 
 logger = logging.getLogger(__name__)
 
@@ -45,7 +45,7 @@ class Connection(object):
 
     def __init__(self, connection_string):
         # TODO: Find a better way to extend to addition flight parameters
-        
+
         splits = connection_string.split(";")
         hostname = splits[2].split("=")[1]
         port = splits[3].split("=")[1]

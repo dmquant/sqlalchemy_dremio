@@ -173,7 +173,7 @@ class DremioDialect_flight(default.DefaultDialect):
 
     @classmethod
     def dbapi(cls):
-        import sqlalchemy_dremio_flight.db as module
+        import sqlalchemy_dremio.db as module
         return module
 
     def connect(self, *cargs, **cparams):
@@ -203,7 +203,7 @@ class DremioDialect_flight(default.DefaultDialect):
             if col[1] not in _type_map:
                 print(col[1] + " is not found in _type_map. please check the field in the dremio ")
                 continue
-            
+
             ctype = _type_map[col[1]]
             column = {
                 "name": cname,
