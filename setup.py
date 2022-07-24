@@ -31,7 +31,7 @@ setup(
     packages=find_packages(include=['sqlalchemy_dremio_flight']),
     entry_points={
         'sqlalchemy.dialects': [
-            'dremio.flight = sqlalchemy_dremio_flight.flight:DremioDialect_flight',
+            'dremio = sqlalchemy_dremio_flight.flight:DremioDialect_flight',
         ]
     },
     include_package_data=True,
