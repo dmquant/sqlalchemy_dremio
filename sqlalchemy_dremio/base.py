@@ -1,19 +1,15 @@
-import re
-
 from sqlalchemy import schema, types, pool
 from sqlalchemy.engine import default, reflection
 from sqlalchemy.sql import compiler
 
 _type_map = {
     'boolean': types.BOOLEAN,
-    'bool': types.BOOLEAN,
     'BOOLEAN': types.BOOLEAN,
     'varbinary': types.LargeBinary,
     'VARBINARY': types.LargeBinary,
     'date': types.DATE,
     'DATE': types.DATE,
     'float': types.FLOAT,
-    'float32': types.FLOAT,
     'FLOAT': types.FLOAT,
     'decimal': types.DECIMAL,
     'DECIMAL': types.DECIMAL,
@@ -58,7 +54,9 @@ class DremioCompiler(compiler.SQLCompiler):
                 fixed_schema = ".".join(["\"" + i.replace('"', '') + "\"" for i in table.schema.split(".")])
                 fixed_table = fixed_schema + ".\"" + table.name.replace("\"", "") + "\""
             else:
-                fixed_table = "\"" + table.name.replace("\"", "") + "\""
+                # don't change anything. expect a fully and properly qualified path if no schema is passed.
+                fixed_table = table.name
+                # fixed_table = "\"" + table.name.replace("\"", "") + "\""
             return fixed_table
         else:
             return ""
@@ -96,7 +94,7 @@ class DremioIdentifierPreparer(compiler.IdentifierPreparer):
     dremio_reserved = {'abs', 'all', 'allocate', 'allow', 'alter', 'and', 'any', 'are', 'array',
                        'array_max_cardinality', 'as', 'asensitivelo', 'asymmetric', 'at', 'atomic', 'authorization',
                        'avg', 'begin', 'begin_frame', 'begin_partition', 'between', 'bigint', 'binary', 'bit', 'blob',
-                       'boolean', 'bool','both', 'by', 'call', 'called', 'cardinality', 'cascaded', 'case', 'cast', 'ceil',
+                       'boolean', 'both', 'by', 'call', 'called', 'cardinality', 'cascaded', 'case', 'cast', 'ceil',
                        'ceiling', 'char', 'char_length', 'character', 'character_length', 'check', 'classifier',
                        'clob', 'close', 'coalesce', 'collate', 'collect', 'column', 'commit', 'condition', 'connect',
                        'constraint', 'contains', 'convert', 'corr', 'corresponding', 'count', 'covar_pop',
@@ -108,7 +106,7 @@ class DremioIdentifierPreparer(compiler.IdentifierPreparer):
                        'deref', 'describe', 'deterministic', 'disallow', 'disconnect', 'distinct', 'double', 'drop',
                        'dynamic', 'each', 'element', 'else', 'empty', 'end', 'end-exec', 'end_frame', 'end_partition',
                        'equals', 'escape', 'every', 'except', 'exec', 'execute', 'exists', 'exp', 'explain', 'extend',
-                       'external', 'extract', 'false', 'fetch', 'filter', 'first_value', 'float', 'float32','floor', 'for',
+                       'external', 'extract', 'false', 'fetch', 'filter', 'first_value', 'float', 'floor', 'for',
                        'foreign', 'frame_row', 'free', 'from', 'full', 'function', 'fusion', 'get', 'global', 'grant',
                        'group', 'grouping', 'groups', 'having', 'hold', 'hour', 'identity', 'import', 'in',
                        'indicator', 'initial', 'inner', 'inout', 'insensitive', 'insert', 'int', 'integer',
@@ -146,12 +144,7 @@ class DremioIdentifierPreparer(compiler.IdentifierPreparer):
             __init__(dialect, initial_quote='"', final_quote='"')
 
 
-class DremioExecutionContext_flight(DremioExecutionContext):
-    pass
-
-
-class DremioDialect_flight(default.DefaultDialect):
-
+class DremioDialect(default.DefaultDialect):
     name = 'dremio'
     supports_sane_rowcount = False
     supports_sane_multi_rowcount = False
@@ -160,27 +153,19 @@ class DremioDialect_flight(default.DefaultDialect):
     ddl_compiler = DremioDDLCompiler
     preparer = DremioIdentifierPreparer
     execution_ctx_cls = DremioExecutionContext
-    paramstyle = 'pyformat'
-    # default_paramstyle = "qmark"
+    default_paramstyle = "qmark"
     filter_schema_names = []
-
-    def create_connect_args(self, url):
-        opts = url.translate_connect_args(username='user')
-        connect_args = {}
-        connectors = ["UID=%s" % opts['user'],
-                      "PWD=%s" % opts['password'],
-                      'HOST=%s' % opts['host'],
-                      'PORT=%s' % opts['port'],
-                      'Schema=%s' % opts['database']
-                      ]
-        return [[";".join(connectors)], connect_args]
 
     @classmethod
     def dbapi(cls):
-        import sqlalchemy_dremio.db as module
+        import pyodbc as module
         return module
 
     def connect(self, *cargs, **cparams):
+        engine_params = [param.lower() for param in cparams.keys()]
+        if 'autocommit' not in engine_params:
+            cparams['autocommit'] = 1
+
         return self.dbapi.connect(*cargs, **cparams)
 
     def last_inserted_ids(self):
@@ -203,11 +188,6 @@ class DremioDialect_flight(default.DefaultDialect):
         result = []
         for col in cursor:
             cname = col[0]
-
-            if col[1] not in _type_map:
-                print(col[1] + " is not found in _type_map. please check the field in the dremio ")
-                continue
-
             ctype = _type_map[col[1]]
             column = {
                 "name": cname,
@@ -222,17 +202,14 @@ class DremioDialect_flight(default.DefaultDialect):
     @reflection.cache
     def get_table_names(self, connection, schema, **kw):
         sql = 'SELECT TABLE_NAME FROM INFORMATION_SCHEMA."TABLES"'
+
+        # Reverting #5 as Dremio does not support parameterized queries.
         if schema is not None:
-            sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.\"TABLES\" WHERE TABLE_SCHEMA = '" + schema + "'"
+            sql += " WHERE TABLE_SCHEMA = '" + schema + "'"
 
         result = connection.execute(sql)
         table_names = [r[0] for r in result]
         return table_names
-
-    def get_schema_names(self, connection, schema=None, **kw):
-        result = connection.execute("SHOW SCHEMAS")
-        schema_names = [r[0] for r in result]
-        return schema_names
 
     def get_schema_names(self, connection, schema=None, **kw):
         if len(self.filter_schema_names) > 0:
@@ -267,6 +244,6 @@ class DremioDialect_flight(default.DefaultDialect):
             else:
                 replaced_stmt = replaced_stmt.replace('?', "'" + escaped_str + "'", 1)
 
-        super(DremioDialect_flight, self).do_execute_no_params(
+        super(DremioDialect, self).do_execute_no_params(
             cursor, replaced_stmt, context
         )
